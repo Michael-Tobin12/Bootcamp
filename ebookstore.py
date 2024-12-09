@@ -16,9 +16,9 @@ def new_book():
     while True:
 
         title = input(
-            "Please enter title of the book (or exit to return to menu): "
+            "Please enter title of the book (or leave blank to return to menu): "
         )
-        if title.lower() == "exit":
+        if title.lower() == "":
             break
         else:
             author = input("Please enter author of book: ")
@@ -35,7 +35,8 @@ def new_book():
                     db.commit()
                     print(separator)
                     print(
-                        f"New book id {id}: {title} by {author} ({stock_qty}) Successfully added!"
+                        f"New book id {id}: {title} by"
+                        f"{author} ({stock_qty}) Successfully added!"
                     )
                     print(separator)
                     break
