@@ -8,8 +8,11 @@ separator = "------------------------------------"
 
 
 def new_book():
-    """Adds a new book to the database by prompting user to manually
-    enter the title, author and stock quantity.
+    """
+    Adds a new book to the database.
+
+    Prompts the  user to manually enter the title, author, and stock
+    quantity.
     """
 
     print(separator)
@@ -60,7 +63,7 @@ def menu():
 
 
 def menu_input():
-    """Takes menu input and starts appropriate function"""
+    """Takes menu input and starts appropriate function."""
     while True:
 
         selection = input("Menu selection: ").lower()
@@ -85,7 +88,7 @@ def menu_input():
 
 
 def edit_menu():
-    """Options menu for the edit section"""
+    """Options menu for the edit section."""
     print("What would you like to edit?")
     print("t - Edit title")
     print("a - Edit author")
@@ -96,7 +99,12 @@ def edit_menu():
 
 
 def qty_menu():
-    """Provides a menu of options for changing qty"""
+    """
+    Prints menu and returns input.
+
+    Prints the menu options, gets user's input for their choice, and
+    returns the selection.
+    """
     print("What would you like to do?")
     print("a - Add stock")
     print("r - Remove stock")
@@ -107,10 +115,14 @@ def qty_menu():
 
 
 def confirm_input(prompt):
-    """Gets user to confirm their input as correct.
+    """
+    Confirms prompt is correct.
+
+    Allows user to check and confirm the prompt is correct and they want
+    to proceed.
 
     Parameter:
-    prompt: The string which is to be confirmed by the user
+        prompt (str): The string which is to be confirmed by the user.
     """
     while True:
         user_input = input(prompt)
@@ -127,15 +139,16 @@ def confirm_input(prompt):
 
 
 def change_qty(id_to_edit, qty_change, operation, cursor, db):
-    """Updates the quantity of a book on the database.
+    """
+    Updates the quantity of a book on the database.
 
     Parameters:
-    id_to_edit: The ID of book on database to edit
-    qty_change: The quantity to add, subtract or set as new value
-    operation: What change is to be done to the current quantity, either
-    add, subtract or set.
-    cursor: sqlite3 cursor object
-    db: sqlite3 database connection object
+        id_to_edit (int): The ID of book on database to edit.
+        qty_change (int): The quantity to add, subtract or set as new value.
+        operation (str): What change is to be done to the current quantity,
+                        either 'add', 'subtract' or 'set'.
+        cursor (sqlite3.cursor): The SQLite3 cursor object.
+        db (sqlite3.connection): The SQLite3 database connection object.
     """
 
     try:
@@ -162,14 +175,15 @@ def change_qty(id_to_edit, qty_change, operation, cursor, db):
 
 
 def new_info(cursor, db, column, id_to_edit):
-    """Updates title or author of book on database.
+    """
+    Updates title or author of book on database.
 
     Parameters:
-    cursor: sqlite3 cursor object
-    db: sqlite3 database object
-    column: Which attribute to update in the database, either title or
-    author
-    id_to_edit: The ID of the book to be edited
+        cursor (sqlite3.cursor): The SQLite3 cursor object.
+        db (sqlite3.connection): The SQLite3 database connection object.
+        column (str): Which attribute to update in the database,
+                    either title or author.
+        id_to_edit (int): The ID of the book to be edited.
     """
     while True:
         updated_info = input(f"Please enter new {column}: ")
@@ -200,8 +214,17 @@ def new_info(cursor, db, column, id_to_edit):
 
 
 def new_quantity(cursor, db, id_to_edit):
-    """Allows user to edit the stock quantity of a book on the database
-    by selecting using book ID."""
+    """
+    Changes quantity of book on database.
+
+    Allows user to edit the stock quantity of a book on the database
+    by selecting using book ID.
+
+    Parameters:
+        cursor (sqlite3.cursor): The SQLite3 cursor object.
+        db (sqlite3.connection): The SQLite3 database connection object.
+        id_to_edit (int): The ID of the book to be edited.
+    """
     cursor.execute("SELECT qty FROM book WHERE id = ?", (id_to_edit,))
     current_qty = cursor.fetchone()[0]
     print(f"Current stock level: {current_qty}")
@@ -234,13 +257,18 @@ def new_quantity(cursor, db, id_to_edit):
 
 
 def get_from_id(cursor):
-    """Prompts user to enter a book ID and returns the details of that
-    book.
-    Parameter:
-    cursor (sqlite3.cursor): The database cursor used to execute SQL
-    commands.
+    """
+    Enter book ID and returns full details.
 
-    Returns: A tuple containing (title, author, id)
+    Prompts user to enter a book ID and returns the title, author and
+    quantity in stock from the database.
+
+    Parameter:
+        cursor (sqlite3.cursor): The database cursor used to execute SQL
+        commands.
+
+    Returns:
+        tuple: A tuple containing (title, author, id) of the book.
     """
     while True:
         id_input = input(
@@ -263,10 +291,12 @@ def get_from_id(cursor):
 
 
 def delete_menu():
-    """Provides the user with a menu of options for selecting a book to
+    """
+    Provides the user with a menu of options for selecting a book to
     delete by database ID or book title.
 
-    Returns: The selection from the menu
+    Returns:
+        str: The selection from the menu.
     """
     print("How would you like to select book for deletion: ")
     print("id - book ID")
@@ -278,11 +308,16 @@ def delete_menu():
 
 
 def search(cursor):
-    """Searches the database for user input to partially match either
+    """
+    Performs a search on the database.
+
+    Searches the database for user input to partially match either the
     title or author. Only displays a maximum of 10 results.
 
     Parameter:
-    cursor: sqlite3 cursor object"""
+        cursor (sqlite3.Cursor): The database cursor used to execute SQL
+        commands.
+    """
     while True:
         search_term = input("(Type exit to return)\nEnter search : ")
         if search_term == "exit":
@@ -325,11 +360,16 @@ def search(cursor):
 
 
 def delete_book(db, cursor):
-    """Allows user to delete a book from the system. User will be
-    prompted to find book by either id or title.
+    """
+    Allows user to delete a book from the system.
+
+    User will be prompted to find book by either id or title, then
+    confirm the selection is correct before deleting from the database.
+
     Parameters:
-    db = connection to the database
-    cursor = database cursor
+        db (sqlite3.Connection): The SQLite3 database connection object.
+        cursor (sqlite3.Cursor): The database cursor used to execute SQL
+        commands.
     """
     while True:
         # Menu for using id or title to select book
@@ -393,12 +433,14 @@ def delete_book(db, cursor):
 
 
 def update_book(db, cursor):
-    """Manually updates book title, author or stock quantity by allowing
+    """
+    Manually updates book title, author or stock quantity by allowing
     user to select book by ID
 
     Parameters:
-    db: sqlite3 database connection object
-    cursor: sqlite3 database cursor object
+        db (sqlite3.Connection): The SQLite3 database connection object.
+        cursor (sqlite3.Cursor): The database cursor used to execute SQL
+        commands.
     """
     while True:
         try:
